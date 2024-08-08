@@ -1,35 +1,28 @@
 import os
 import re
 
-# Ruta de la carpeta que contiene los archivos de logs
-carpeta_logs = "logs"
+# Directory containing the log files
+log_directory = "logs"
 
-# Patrón para encontrar los errores en los logs
-patron_error = re.compile(r'<CAMPO1>ERR</CAMPO1>.*<CAMPO5>(.*?)</CAMPO5>.*<CAMPO9>(.*?)</CAMPO9>')
+# Pattern to find the specific logs with "1 - Peticions TCP" in CAMPO3
+pattern = re.compile(r'<CAMPO1>INP</CAMPO1>.*<CAMPO3>1 - Peticions TCP</CAMPO3>')
 
-# Contador de errores y lista para almacenar las fechas y descripciones de los errores
-contador_errores = 0
-errores = []
+# Counter for occurrences
+occurrence_count = 0
 
-# Iterar sobre cada archivo en la carpeta
-for archivo in os.listdir(carpeta_logs):
-    if archivo.endswith(".log"):  # Solo procesar archivos con extensión .log
-        ruta_archivo = os.path.join(carpeta_logs, archivo)
+# Iterate over each file in the directory
+for file in os.listdir(log_directory):
+    # Check if the file ends with a Julian date (a numeric extension)
+    if file.split('.')[-1].isdigit():
+        file_path = os.path.join(log_directory, file)
         
-        with open(ruta_archivo, 'r', encoding='utf-8') as file:
-            contenido = file.read()
-            # Buscar todas las coincidencias de errores en el archivo
-            coincidencias = patron_error.findall(contenido)
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            # Find all matches of the specific pattern in the file
+            matches = pattern.findall(content)
             
-            # Contabilizar y guardar cada error encontrado
-            for coincidencia in coincidencias:
-                contador_errores += 1
-                fecha = coincidencia[0]
-                descripcion = coincidencia[1]
-                errores.append((fecha, descripcion))
+            # Count the number of matches
+            occurrence_count += len(matches)
 
-# Mostrar los resultados
-print(f"Número total de errores encontrados: {contador_errores}")
-print("Detalles de los errores:")
-for fecha, descripcion in errores:
-    print(f"Fecha: {fecha}, Descripción: {descripcion}")
+# Display the result
+print(f"Total number of '1 - Peticions TCP' entries found: {occurrence_count}")
