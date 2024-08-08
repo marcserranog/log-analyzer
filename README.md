@@ -5,7 +5,7 @@ Este proyecto es un script en Python que lee archivos de log en una carpeta espe
 ## Cómo usar
 
 1. Coloca tus archivos de log en la carpeta `logs/`.
-2. Ejecuta el script `analizador_logs.py`.
+2. Ejecuta el script `log_analyzer.py`.
 3. Verás la salida en la terminal con el número de errores y los detalles.
 
 ## Requisitos
@@ -15,4 +15,4 @@ Este proyecto es un script en Python que lee archivos de log en una carpeta espe
 ## Ejecución
 
 ```bash
-python analizador_logs.py
+python log_analyzer.py
